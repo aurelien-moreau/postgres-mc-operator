@@ -171,6 +171,10 @@ go run ./cmd/main.go
 ```bash
 KUBECONFIG=/tmp/kube-tech.yaml kubectl create namespace postgres-system
 
+# ClusterRole (permissions for the operator)
+KUBECONFIG=/tmp/kube-tech.yaml kubectl apply -f config/rbac/role.yaml
+
+# ServiceAccount + binding
 KUBECONFIG=/tmp/kube-tech.yaml kubectl -n postgres-system \
   create serviceaccount postgres-mc-operator
 
