@@ -8,10 +8,6 @@ manager
 coverage.html
 coverage.txt
 
-# kubebuilder / controller-gen output (generated, do not edit)
-config/crd/bases/
-config/rbac/
-
 # envtest binaries downloaded by setup-envtest
 testbin/
 

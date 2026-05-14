@@ -1,0 +1,27 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: postgres-mc-operator-role
+rules:
+  # PostgresMC CRD management
+  - apiGroups: [pgmc.aurelops.com]
+    resources: [postgresmcs]
+    verbs: [get, list, watch, create, update, patch, delete]
+  - apiGroups: [pgmc.aurelops.com]
+    resources: [postgresmcs/status]
+    verbs: [get, update, patch]
+  - apiGroups: [pgmc.aurelops.com]
+    resources: [postgresmcs/finalizers]
+    verbs: [update]
+  # Read kubeconfig Secrets for workload clusters
+  - apiGroups: [""]
+    resources: [secrets]
+    verbs: [get, list, watch]
+  # Emit events
+  - apiGroups: [""]
+    resources: [events]
+    verbs: [create, patch]
+  # Leader election
+  - apiGroups: [coordination.k8s.io]
+    resources: [leases]
+    verbs: [get, list, watch, create, update, patch, delete]
