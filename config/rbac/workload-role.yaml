@@ -1,18 +1,19 @@
-# Install this ClusterRole on EACH workload cluster and bind it to the ServiceAccount
-# whose kubeconfig is stored on the tech cluster.
+# Namespaced Role installed on EACH workload cluster.
+# Scoped to the postgres namespace — the operator only manages resources there.
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
+kind: Role
 metadata:
   name: postgres-mc-operator-workload
+  namespace: postgres
 rules:
   # Zalando postgresql CRD
   - apiGroups: [acid.zalan.do]
     resources: [postgresqls, postgresqls/status]
     verbs: [get, list, watch, create, update, patch, delete]
-  # Credential secret sync
+  # Credential secret sync — no delete (operator never removes secrets)
   - apiGroups: [""]
     resources: [secrets]
-    verbs: [get, list, watch, create, update, patch, delete]
+    verbs: [get, create, update, patch]
   # Cross-cluster alias Services and Endpoints
   - apiGroups: [""]
     resources: [services, endpoints]
@@ -20,8 +21,8 @@ rules:
   # Node IP discovery for NodePort replication service endpoint
   - apiGroups: [""]
     resources: [nodes]
-    verbs: [get, list, watch]
+    verbs: [get, list]
   # Patroni config patching (optional, only needed for advanced failover)
   - apiGroups: [""]
     resources: [configmaps]
-    verbs: [get, list, watch, patch]
+    verbs: [get, patch]

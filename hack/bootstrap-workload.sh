@@ -48,10 +48,10 @@ REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 echo "--> ClusterRole postgres-mc-operator-workload"
 kubectl apply -f "$REPO_ROOT/config/rbac/workload-role.yaml"
 
-# ClusterRoleBinding
-echo "--> ClusterRoleBinding"
-kubectl create clusterrolebinding postgres-mc-remote \
-  --clusterrole=postgres-mc-operator-workload \
+# RoleBinding (namespaced — the Role is scoped to the postgres namespace)
+echo "--> RoleBinding"
+kubectl -n postgres create rolebinding postgres-mc-remote \
+  --role=postgres-mc-operator-workload \
   --serviceaccount=postgres:postgres-mc-remote \
   --dry-run=client -o yaml | kubectl apply -f -
 

@@ -74,8 +74,8 @@ kubectl apply -f config/crd/bases/pgmc.aurelops.com_postgresmcs.yaml
 kubectl apply -f config/rbac/role.yaml
 
 kubectl -n postgres-system create serviceaccount postgres-mc-operator
-kubectl create clusterrolebinding postgres-mc-operator \
-  --clusterrole=postgres-mc-operator-role \
+kubectl -n postgres-system create rolebinding postgres-mc-operator \
+  --role=postgres-mc-operator-role \
   --serviceaccount=postgres-system:postgres-mc-operator
 
 # Uses image: aurelops/postgres-mc-operator:latest from Docker Hub
@@ -116,8 +116,8 @@ helm install postgres-operator zalando/postgres-operator \
 kubectl create namespace postgres
 kubectl -n postgres create serviceaccount postgres-mc-remote
 kubectl apply -f config/rbac/workload-role.yaml
-kubectl create clusterrolebinding postgres-mc-remote \
-  --clusterrole=postgres-mc-operator-workload \
+kubectl -n postgres create rolebinding postgres-mc-remote \
+  --role=postgres-mc-operator-workload \
   --serviceaccount=postgres:postgres-mc-remote
 
 TOKEN=$(kubectl -n postgres create token postgres-mc-remote --duration=8760h)

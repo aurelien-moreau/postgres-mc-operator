@@ -181,8 +181,8 @@ KUBECONFIG=/tmp/kube-tech.yaml kubectl apply -f config/rbac/role.yaml
 KUBECONFIG=/tmp/kube-tech.yaml kubectl -n postgres-system \
   create serviceaccount postgres-mc-operator
 
-KUBECONFIG=/tmp/kube-tech.yaml kubectl create clusterrolebinding postgres-mc-operator \
-  --clusterrole=postgres-mc-operator-role \
+KUBECONFIG=/tmp/kube-tech.yaml kubectl -n postgres-system create rolebinding postgres-mc-operator \
+  --role=postgres-mc-operator-role \
   --serviceaccount=postgres-system:postgres-mc-operator
 
 KUBECONFIG=/tmp/kube-tech.yaml kubectl apply -f config/manager/deployment.yaml
