@@ -115,8 +115,12 @@ KUBECONFIG=/tmp/kube-us.yaml kubectl -n postgres-operator get pods
 The `hack/bootstrap-workload.sh` script creates the namespace, RBAC, and generates
 the kubeconfig the operator will use to manage each workload cluster.
 
-> **Network note**: kind kubeconfigs point to `127.0.0.1`.
-> This is correct because the operator runs locally on your Mac, not inside a pod.
+> **Network note**: the script automatically detects kind clusters and replaces
+> the `127.0.0.1` address from the kind kubeconfig with the Docker-internal IP
+> of the control-plane container (`172.18.0.x:6443`). This is required when the
+> operator runs as a pod — pods cannot reach `127.0.0.1` of the host Mac, but all
+> kind clusters share the same Docker `kind` network and can reach each other via
+> their internal IPs.
 
 ```bash
 bash hack/bootstrap-workload.sh /tmp/kube-eu.yaml eu-west-1 /tmp/kubeconfig-eu-for-tech.yaml
