@@ -1,4 +1,4 @@
-apiVersion: pgmc.aurelops.io/v1alpha1
+apiVersion: pgmc.aurelops.com/v1alpha1
 kind: PostgresMC
 metadata:
   name: my-postgres

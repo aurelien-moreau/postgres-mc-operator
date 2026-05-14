@@ -116,8 +116,8 @@ func buildTargetSecret(src *corev1.Secret, name, namespace, pgmcName, clusterNam
 	labels := map[string]string{
 		"application":                "spilo",
 		"cluster-name":               clusterName,
-		"pgmc.aurelops.io/managed":   "true",
-		"pgmc.aurelops.io/postgresmc": pgmcName,
+		"pgmc.aurelops.com/managed":   "true",
+		"pgmc.aurelops.com/postgresmc": pgmcName,
 	}
 
 	return &corev1.Secret{

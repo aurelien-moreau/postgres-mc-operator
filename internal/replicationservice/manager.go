@@ -123,8 +123,8 @@ func buildNodePortService(pgmcName, namespace, zalandoClusterName string, nodePo
 			Name:      ServiceName(pgmcName),
 			Namespace: namespace,
 			Labels: map[string]string{
-				"pgmc.aurelops.io/managed":    "true",
-				"pgmc.aurelops.io/postgresmc": pgmcName,
+				"pgmc.aurelops.com/managed":    "true",
+				"pgmc.aurelops.com/postgresmc": pgmcName,
 			},
 		},
 		Spec: corev1.ServiceSpec{
@@ -152,8 +152,8 @@ func buildLoadBalancerService(pgmcName, namespace, zalandoClusterName string) *c
 			Name:      ServiceName(pgmcName),
 			Namespace: namespace,
 			Labels: map[string]string{
-				"pgmc.aurelops.io/managed":    "true",
-				"pgmc.aurelops.io/postgresmc": pgmcName,
+				"pgmc.aurelops.com/managed":    "true",
+				"pgmc.aurelops.com/postgresmc": pgmcName,
 			},
 		},
 		Spec: corev1.ServiceSpec{

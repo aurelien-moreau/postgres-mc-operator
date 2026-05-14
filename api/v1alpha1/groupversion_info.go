@@ -1,6 +1,6 @@
 // Package v1alpha1 contains API Schema definitions for the pgmc v1alpha1 API group.
 // +kubebuilder:object:generate=true
-// +groupName=pgmc.aurelops.io
+// +groupName=pgmc.aurelops.com
 package v1alpha1
 
 import (
@@ -9,7 +9,7 @@ import (
 )
 
 var (
-	GroupVersion  = schema.GroupVersion{Group: "pgmc.aurelops.io", Version: "v1alpha1"}
+	GroupVersion  = schema.GroupVersion{Group: "pgmc.aurelops.com", Version: "v1alpha1"}
 	SchemeBuilder = &scheme.Builder{GroupVersion: GroupVersion}
 	AddToScheme   = SchemeBuilder.AddToScheme
 )

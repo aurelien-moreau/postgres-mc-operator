@@ -59,8 +59,8 @@ func (m *serviceManager) ensureExternalName(ctx context.Context, plan AliasPlan,
 			Name:      aliasName,
 			Namespace: plan.StandbyNS,
 			Labels: map[string]string{
-				"pgmc.aurelops.io/managed":    "true",
-				"pgmc.aurelops.io/postgresmc": plan.PostgresMCName,
+				"pgmc.aurelops.com/managed":    "true",
+				"pgmc.aurelops.com/postgresmc": plan.PostgresMCName,
 			},
 		},
 		Spec: corev1.ServiceSpec{
@@ -97,8 +97,8 @@ func (m *serviceManager) ensureHeadlessWithEndpoints(ctx context.Context, plan A
 			Name:      aliasName,
 			Namespace: plan.StandbyNS,
 			Labels: map[string]string{
-				"pgmc.aurelops.io/managed":    "true",
-				"pgmc.aurelops.io/postgresmc": plan.PostgresMCName,
+				"pgmc.aurelops.com/managed":    "true",
+				"pgmc.aurelops.com/postgresmc": plan.PostgresMCName,
 			},
 		},
 		Spec: corev1.ServiceSpec{

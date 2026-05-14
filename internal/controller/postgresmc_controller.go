@@ -26,16 +26,16 @@ import (
 )
 
 const (
-	finalizerName   = "pgmc.aurelops.io/finalizer"
+	finalizerName   = "pgmc.aurelops.com/finalizer"
 	requeueDefault  = 30 * time.Second
 	requeueProgress = 10 * time.Second
 )
 
 // PostgresMCReconciler reconciles PostgresMC resources.
 //
-// +kubebuilder:rbac:groups=pgmc.aurelops.io,resources=postgresmcs,verbs=get;list;watch;create;update;patch;delete
-// +kubebuilder:rbac:groups=pgmc.aurelops.io,resources=postgresmcs/status,verbs=get;update;patch
-// +kubebuilder:rbac:groups=pgmc.aurelops.io,resources=postgresmcs/finalizers,verbs=update
+// +kubebuilder:rbac:groups=pgmc.aurelops.com,resources=postgresmcs,verbs=get;list;watch;create;update;patch;delete
+// +kubebuilder:rbac:groups=pgmc.aurelops.com,resources=postgresmcs/status,verbs=get;update;patch
+// +kubebuilder:rbac:groups=pgmc.aurelops.com,resources=postgresmcs/finalizers,verbs=update
 // +kubebuilder:rbac:groups="",resources=secrets,verbs=get;list;watch
 // +kubebuilder:rbac:groups="",resources=events,verbs=create;patch
 // +kubebuilder:rbac:groups=coordination.k8s.io,resources=leases,verbs=get;list;watch;create;update;patch;delete

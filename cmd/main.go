@@ -52,7 +52,7 @@ func main() {
 		},
 		HealthProbeBindAddress: probeAddr,
 		LeaderElection:         leaderElect,
-		LeaderElectionID:       "pgmc.aurelops.io",
+		LeaderElectionID:       "pgmc.aurelops.com",
 	})
 	if err != nil {
 		ctrl.Log.Error(err, "unable to start manager")

@@ -67,7 +67,7 @@ Network requirement: workload cluster pods must be able to reach each other's re
 export KUBECONFIG=~/.kube/tech-cluster.yaml
 
 kubectl create namespace postgres-system
-kubectl apply -f config/crd/bases/pgmc.aurelops.io_postgresmcs.yaml
+kubectl apply -f config/crd/bases/pgmc.aurelops.com_postgresmcs.yaml
 kubectl apply -f config/rbac/role.yaml
 
 kubectl -n postgres-system create serviceaccount postgres-mc-operator
@@ -166,7 +166,7 @@ Repeat steps **2a–2c** for every other workload cluster.
 
 ```yaml
 # my-postgres.yaml
-apiVersion: pgmc.aurelops.io/v1alpha1
+apiVersion: pgmc.aurelops.com/v1alpha1
 kind: PostgresMC
 metadata:
   name: my-postgres
@@ -335,7 +335,7 @@ promoted. The counter is reset to 0 when the primary becomes reachable again.
 ## Spec reference
 
 ```yaml
-apiVersion: pgmc.aurelops.io/v1alpha1
+apiVersion: pgmc.aurelops.com/v1alpha1
 kind: PostgresMC
 spec:
   # Naming prefix for all Zalando clusters: {teamId}-{clusterName}

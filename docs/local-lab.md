@@ -154,7 +154,7 @@ KUBECONFIG=/tmp/kube-tech.yaml kubectl -n postgres-system get secrets
 
 ```bash
 KUBECONFIG=/tmp/kube-tech.yaml kubectl apply \
-  -f config/crd/bases/pgmc.aurelops.io_postgresmcs.yaml
+  -f config/crd/bases/pgmc.aurelops.com_postgresmcs.yaml
 ```
 
 In a dedicated terminal (keep it open):
@@ -182,7 +182,7 @@ delegates all of that to the operator.
 
 ```bash
 cat > /tmp/test-pgmc.yaml << 'EOF'
-apiVersion: pgmc.aurelops.io/v1alpha1
+apiVersion: pgmc.aurelops.com/v1alpha1
 kind: PostgresMC
 metadata:
   name: test-postgres

@@ -73,9 +73,9 @@ func buildPostgresql(mc *pgmcv1alpha1.PostgresMC, target pgmcv1alpha1.ClusterTar
 				"name":      clusterName,
 				"namespace": target.Namespace,
 				"labels": map[string]interface{}{
-					"pgmc.aurelops.io/managed-by": "postgres-mc-operator",
-					"pgmc.aurelops.io/postgresmc": mc.Name,
-					"pgmc.aurelops.io/cluster":    target.Name,
+					"pgmc.aurelops.com/managed-by": "postgres-mc-operator",
+					"pgmc.aurelops.com/postgresmc": mc.Name,
+					"pgmc.aurelops.com/cluster":    target.Name,
 				},
 			},
 			"spec": specMap,
