@@ -1,0 +1,35 @@
+# Binaries
+bin/
+manager
+
+# Go build cache
+*.test
+*.out
+coverage.html
+coverage.txt
+
+# kubebuilder / controller-gen output (generated, do not edit)
+config/crd/bases/
+config/rbac/
+
+# envtest binaries downloaded by setup-envtest
+testbin/
+
+# Local kubeconfigs (never commit these)
+/tmp/kube-*.yaml
+/tmp/kubeconfig-*.yaml
+
+# Claude Code local settings
+.claude/
+
+# macOS
+.DS_Store
+
+# Editor
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Air live-reload
+tmp/

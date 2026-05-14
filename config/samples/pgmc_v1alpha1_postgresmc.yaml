@@ -1,0 +1,64 @@
+apiVersion: pgmc.aurelops.io/v1alpha1
+kind: PostgresMC
+metadata:
+  name: my-postgres
+  namespace: postgres-system
+spec:
+  teamId: app
+
+  # The operator creates a replication service on every cluster automatically.
+  # Use NodePort for kind/bare-metal, LoadBalancer for cloud environments.
+  replicationService:
+    type: LoadBalancer
+    # nodePort: 32432   # only needed for NodePort type
+
+  clusters:
+    - name: eu-west-1
+      clusterRef: kubeconfig-eu-west-1
+      namespace: postgres
+      role: primary
+
+    - name: us-east-1
+      clusterRef: kubeconfig-us-east-1
+      namespace: postgres
+      role: standby
+
+  postgresqlSpec:
+    volume:
+      size: 10Gi
+      storageClass: gp2
+    numberOfInstances: 2
+    users:
+      appuser:
+        - superuser
+        - createdb
+    databases:
+      appdb: appuser
+    postgresql:
+      version: "16"
+    resources:
+      requests:
+        cpu: 500m
+        memory: 512Mi
+
+  replication:
+    mode: async
+
+  # Optional: automatic promotion of standby when primary is unreachable.
+  # autoFailover:
+  #   enabled: true
+  #   primaryUnreachableThreshold: 3   # consecutive failed reconciliations
+
+---
+# Kubeconfig Secret for the primary workload cluster (eu-west-1).
+# Create with:
+#   kubectl -n postgres-system create secret generic kubeconfig-eu-west-1 \
+#     --from-file=kubeconfig=/path/to/kubeconfig-eu.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: kubeconfig-eu-west-1
+  namespace: postgres-system
+type: Opaque
+data:
+  kubeconfig: <base64-encoded-kubeconfig>
