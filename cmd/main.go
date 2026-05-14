@@ -17,6 +17,7 @@ import (
 
 	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"
+	"sigs.k8s.io/controller-runtime/pkg/cache"
 	"sigs.k8s.io/controller-runtime/pkg/healthz"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 	metricsserver "sigs.k8s.io/controller-runtime/pkg/metrics/server"
@@ -53,6 +54,11 @@ func main() {
 		HealthProbeBindAddress: probeAddr,
 		LeaderElection:         leaderElect,
 		LeaderElectionID:       "pgmc.aurelops.com",
+		Cache: cache.Options{
+			DefaultNamespaces: map[string]cache.Config{
+				"postgres-system": {},
+			},
+		},
 	})
 	if err != nil {
 		ctrl.Log.Error(err, "unable to start manager")
