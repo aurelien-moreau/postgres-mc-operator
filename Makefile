@@ -1,5 +1,5 @@
 BINARY_NAME     := postgres-mc-operator
-IMG             ?= $(BINARY_NAME):latest
+IMG             ?= aurelops/$(BINARY_NAME):latest
 CONTROLLER_GEN  := controller-gen
 GO              := go
 

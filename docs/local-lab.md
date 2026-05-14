@@ -157,7 +157,7 @@ KUBECONFIG=/tmp/kube-tech.yaml kubectl apply \
   -f config/crd/bases/pgmc.aurelops.com_postgresmcs.yaml
 ```
 
-In a dedicated terminal (keep it open):
+**Option A — run from source** (recommended for development), in a dedicated terminal:
 
 ```bash
 export KUBECONFIG=/tmp/kube-tech.yaml
@@ -166,7 +166,24 @@ export PATH="/opt/homebrew/bin:$PATH"
 go run ./cmd/main.go
 ```
 
-You should see:
+**Option B — run from the Docker Hub image**:
+
+```bash
+KUBECONFIG=/tmp/kube-tech.yaml kubectl create namespace postgres-system
+
+KUBECONFIG=/tmp/kube-tech.yaml kubectl -n postgres-system \
+  create serviceaccount postgres-mc-operator
+
+KUBECONFIG=/tmp/kube-tech.yaml kubectl create clusterrolebinding postgres-mc-operator \
+  --clusterrole=postgres-mc-operator-role \
+  --serviceaccount=postgres-system:postgres-mc-operator
+
+KUBECONFIG=/tmp/kube-tech.yaml kubectl apply -f config/manager/deployment.yaml
+```
+
+> The deployment uses `aurelops/postgres-mc-operator:latest` from Docker Hub.
+
+Either way, you should see:
 
 ```
 {"level":"info","msg":"starting manager"}

@@ -1,5 +1,8 @@
 # postgres-mc-operator
 
+[![Docker Hub](https://img.shields.io/docker/v/aurelops/postgres-mc-operator?label=Docker%20Hub&logo=docker)](https://hub.docker.com/r/aurelops/postgres-mc-operator)
+[![CI](https://github.com/aurelien-moreau/postgres-mc-operator/actions/workflows/ci.yaml/badge.svg)](https://github.com/aurelien-moreau/postgres-mc-operator/actions/workflows/ci.yaml)
+
 Kubernetes operator for multi-cluster PostgreSQL, built on top of the [Zalando postgres-operator](https://github.com/zalando/postgres-operator).
 
 A single `PostgresMC` resource on a **technical cluster** declares a PostgreSQL topology spanning multiple **workload clusters**. The operator provisions Zalando `postgresql` resources on each workload cluster, synchronises credentials, wires up cross-cluster streaming replication, and manages failover — all automatically.
@@ -75,6 +78,7 @@ kubectl create clusterrolebinding postgres-mc-operator \
   --clusterrole=postgres-mc-operator-role \
   --serviceaccount=postgres-system:postgres-mc-operator
 
+# Uses image: aurelops/postgres-mc-operator:latest from Docker Hub
 kubectl apply -f config/manager/deployment.yaml
 ```
 
@@ -537,9 +541,13 @@ make run            # run locally against current KUBECONFIG
 make generate       # regenerate deepcopy functions
 make manifests      # regenerate CRD + RBAC manifests
 make test           # run tests with coverage
-make docker-build IMG=my-registry/postgres-mc-operator:v0.1.0
-make docker-push  IMG=my-registry/postgres-mc-operator:v0.1.0
+make docker-build IMG=aurelops/postgres-mc-operator:latest
+make docker-push  IMG=aurelops/postgres-mc-operator:latest
 ```
+
+The CI pipeline (`.github/workflows/ci.yaml`) builds and pushes to
+[Docker Hub](https://hub.docker.com/r/aurelops/postgres-mc-operator) automatically
+on every push to `main` and on version tags (`v*`).
 
 ### Project layout
 
