@@ -1,0 +1,11 @@
+# Minimal ClusterRole installed on EACH workload cluster.
+# Nodes are cluster-scoped resources — a namespaced Role cannot grant access to them.
+# This is the only cluster-wide permission the operator needs on workload clusters.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: postgres-mc-operator-nodes
+rules:
+  - apiGroups: [""]
+    resources: [nodes]
+    verbs: [get, list]

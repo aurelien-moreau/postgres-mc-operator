@@ -112,14 +112,33 @@ helm install postgres-operator zalando/postgres-operator \
 
 #### 2b. Create RBAC and generate kubeconfig
 
+Use the bootstrap script — it handles everything automatically (namespace, ServiceAccount, Role, ClusterRole for node discovery, RoleBinding, ClusterRoleBinding, kubeconfig generation):
+
 ```bash
+bash hack/bootstrap-workload.sh ~/.kube/workload-eu-west-1.yaml eu-west-1 /tmp/kubeconfig-eu-west-1.yaml
+```
+
+<details>
+<summary>Manual equivalent (without the script)</summary>
+
+```bash
+# Namespace + ServiceAccount
 kubectl create namespace postgres
 kubectl -n postgres create serviceaccount postgres-mc-remote
+
+# Namespaced Role for postgres namespace resources
 kubectl apply -f config/rbac/workload-role.yaml
 kubectl -n postgres create rolebinding postgres-mc-remote \
   --role=postgres-mc-operator-workload \
   --serviceaccount=postgres:postgres-mc-remote
 
+# ClusterRole for node IP discovery (nodes are cluster-scoped)
+kubectl apply -f config/rbac/workload-nodes-clusterrole.yaml
+kubectl create clusterrolebinding postgres-mc-operator-nodes \
+  --clusterrole=postgres-mc-operator-nodes \
+  --serviceaccount=postgres:postgres-mc-remote
+
+# Generate kubeconfig
 TOKEN=$(kubectl -n postgres create token postgres-mc-remote --duration=8760h)
 SERVER=$(kubectl config view --minify -o jsonpath='{.clusters[0].cluster.server}')
 CA_DATA=$(kubectl config view --minify --raw \
@@ -147,11 +166,9 @@ users:
 EOF
 ```
 
-Or use the helper script included in the repo:
-
-```bash
-bash hack/bootstrap-workload.sh ~/.kube/workload-eu-west-1.yaml eu-west-1 /tmp/kubeconfig-eu-west-1.yaml
-```
+> **Note for kind clusters**: replace `SERVER` with `https://<docker-internal-ip>:6443` —
+> pods cannot reach `127.0.0.1` of the host. The bootstrap script detects this automatically.
+</details>
 
 #### 2c. Store the kubeconfig on the technical cluster
 
@@ -400,8 +417,11 @@ data:
   kubeconfig: <base64-encoded kubeconfig>   # key must be exactly "kubeconfig"
 ```
 
-The kubeconfig's ServiceAccount must be bound to `postgres-mc-operator-workload`
-ClusterRole on the workload cluster (see `config/rbac/workload-role.yaml`).
+The kubeconfig's ServiceAccount must be bound to:
+- `postgres-mc-operator-workload` Role (namespace-scoped, `config/rbac/workload-role.yaml`)
+- `postgres-mc-operator-nodes` ClusterRole (for node IP discovery, `config/rbac/workload-nodes-clusterrole.yaml`)
+
+Use `hack/bootstrap-workload.sh` to set this up automatically.
 
 ---
 
@@ -565,7 +585,7 @@ internal/
   status/                  condition helpers and phase aggregation
 config/
   crd/bases/               generated CRD manifest
-  rbac/                    ClusterRoles (tech cluster + workload clusters)
+  rbac/                    Roles and ClusterRoles (tech + workload clusters)
   samples/                 example PostgresMC manifests
 docs/
   local-lab.md             3-cluster kind lab guide

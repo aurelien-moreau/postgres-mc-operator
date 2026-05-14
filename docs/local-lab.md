@@ -112,8 +112,9 @@ KUBECONFIG=/tmp/kube-us.yaml kubectl -n postgres-operator get pods
 
 ## Step 3 — Bootstrap workload clusters
 
-The `hack/bootstrap-workload.sh` script creates the namespace, RBAC, and generates
-the kubeconfig the operator will use to manage each workload cluster.
+The `hack/bootstrap-workload.sh` script creates the namespace, RBAC (namespaced Role +
+a minimal ClusterRole for node IP discovery), and generates the kubeconfig the operator
+will use to manage each workload cluster.
 
 > **Network note**: the script automatically detects kind clusters and replaces
 > the `127.0.0.1` address from the kind kubeconfig with the Docker-internal IP

@@ -18,10 +18,6 @@ rules:
   - apiGroups: [""]
     resources: [services, endpoints]
     verbs: [get, list, watch, create, update, patch, delete]
-  # Node IP discovery for NodePort replication service endpoint
-  - apiGroups: [""]
-    resources: [nodes]
-    verbs: [get, list]
   # Patroni config patching (optional, only needed for advanced failover)
   - apiGroups: [""]
     resources: [configmaps]

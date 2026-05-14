@@ -45,13 +45,23 @@ kubectl -n postgres create serviceaccount postgres-mc-remote \
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 
-echo "--> ClusterRole postgres-mc-operator-workload"
+echo "--> Role postgres-mc-operator-workload"
 kubectl apply -f "$REPO_ROOT/config/rbac/workload-role.yaml"
 
 # RoleBinding (namespaced — the Role is scoped to the postgres namespace)
 echo "--> RoleBinding"
 kubectl -n postgres create rolebinding postgres-mc-remote \
   --role=postgres-mc-operator-workload \
+  --serviceaccount=postgres:postgres-mc-remote \
+  --dry-run=client -o yaml | kubectl apply -f -
+
+# ClusterRole for node IP discovery (nodes are cluster-scoped, cannot be in a namespaced Role)
+echo "--> ClusterRole postgres-mc-operator-nodes"
+kubectl apply -f "$REPO_ROOT/config/rbac/workload-nodes-clusterrole.yaml"
+
+echo "--> ClusterRoleBinding postgres-mc-operator-nodes"
+kubectl create clusterrolebinding postgres-mc-operator-nodes \
+  --clusterrole=postgres-mc-operator-nodes \
   --serviceaccount=postgres:postgres-mc-remote \
   --dry-run=client -o yaml | kubectl apply -f -
 
